@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #info{
+        border: 1px sloid black;
+        width: 300px;
+        height: 300px;
+    }
+    #info.lightblue{
+        background-color: lightblue;
+        width: 300px;
+        height: 300px;
+    }
+
+</style>
+<body>
+    <div id="info" contenteditable="true" 
+    onfocus="event.target.classList.add('lightblue')"
+    onblur="event.target.classList.remove('lightblue')"
+    oninput=saveData(event.target.innerText)>
+    </div>
+    <script>
+        //將先前所輸入的資料暫時存入localStorage
+        const info = document.querySelector('#info');
+        function saveData(data){
+            localStorage.setItem('my-content',data);
+        }
+        info.innerText=localStorage.getItem('my-content') || '';
+
+    </script>
+</body>
+</html>
