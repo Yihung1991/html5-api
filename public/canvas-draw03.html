@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      canvas {
+        border: 1px solid black;
+        width: 600;
+        height: 400;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="600" height="400"></canvas>
+    <br />
+    <input type="color" id="selColor" value="#0000FF" />
+    <input type="number" id="lineWidth" value="5" />
+    <button onclick="clearRect()">清除</button>
+    <button onclick="savePic()">儲存</button>
+
+    <script>
+      const myCanvas = document.querySelector("#myCanvas");
+      const ctx = myCanvas.getContext("2d");
+      ctx.lineCap = "round";
+
+      const mouseDown = (e) => {
+        ctx.beginPath();
+        myCanvas.addEventListener("mousemove", mouseMove);
+      };
+
+      const mouseUp = (e) => {
+        myCanvas.removeEventListener("mousemove", mouseMove);
+      };
+
+      const mouseMove = (e) => {
+        ctx.strokeStyle = selColor.value;
+        ctx.lineWidth = lineWidth.value;
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+      };
+
+      myCanvas.addEventListener("mousedown", mouseDown);
+      window.addEventListener("mouseup", mouseUp);
+
+      function clearRect(){
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+      }
+      
+      function savePic() {
+        const imageData = myCanvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        const a = document.createElement("a");
+        a.setAttribute("download", "draw.png");
+        a.setAttribute("href", imageData);
+        a.click();
+      }
+    </script>
+  </body>
+</html>
