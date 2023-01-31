@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .rect {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        background-color: rgb(255, 221, 182);
+        border: 1px solid black;
+        left: 300px;
+      }
+      .box {
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        border-radius: 10px;
+        background-color: rgb(121, 207, 231);
+        border: 1px solid black;
+        text-align: center;
+        line-height: 60px;
+        color: white;
+        font-weight: 800;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="rect" style="left: 0px">
+      <div id="box1" class="box" draggable="true">1</div>
+      <div id="box2" class="box" draggable="true">2</div>
+      <div id="box3" class="box" draggable="true">3</div>
+    </div>
+    <div class="rect"></div>
+
+    <script>
+      const rects = document.querySelectorAll(".rect");
+      const boxes = document.querySelectorAll(".box");
+
+      const boxDragStart = (event) => {
+        console.log(event.currentTarget.id);
+        event.dataTransfer.setData("text", event.currentTarget.id);
+      };
+
+      const rectDragEnter = (event) => {
+        //console.log("rectDragEnter:", event.dataTransfer.getData("text"));
+      };
+      const rectDrop = (event) => {
+        console.log("rectDrop:", event.dataTransfer.getData("text"));
+        const id = event.dataTransfer.getData('text');
+        const el = document.getElementById(id);
+        const newEl = el.cloneNode(true);
+        newEl.removeAttribute('id');
+        newEl.removeAttribute('draggable');
+        event.currentTarget.append(newEl);
+      };
+
+      boxes.forEach((b) => {
+        b.addEventListener("dragstart", boxDragStart);
+      });
+
+      
+        rects[1].addEventListener("dragenter", rectDragEnter);
+        rects[1].addEventListener("drop", rectDrop);
+        rects[1].addEventListener("dragover", (e) => e.preventDefault());
+      
+    </script>
+  </body>
+</html>
