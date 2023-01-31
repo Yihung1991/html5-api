@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .rect {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        background-color: rgb(229, 231, 121);
+        border: 1px solid black;
+        left: 300px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="rect"></div>
+
+    <script>
+      const rect = document.querySelector(".rect");
+
+      const rectDrop = (event) => {
+        event.preventDefault(); // 不要用瀏覽器開啟檔案
+        console.log(event.dataTransfer.files);
+      };
+
+
+      rect.addEventListener("dragenter", event=>{
+        event.currentTarget.style.backgroundColor = 'blue';
+      });
+      rect.addEventListener("dragleave", event=>{
+        event.currentTarget.style.backgroundColor = 'rgb(229,231,121)';
+      });
+
+      rect.addEventListener("drop", rectDrop);
+      rect.addEventListener("dragover", (e) => e.preventDefault());
+
+      /*
+      // 拖拉資料夾
+      https://codepen.io/cagerattler/pen/OZqdBy
+      */
+    </script>
+  </body>
+</html>
