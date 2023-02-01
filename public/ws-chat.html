@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        #msgArea{
+            display: none;
+        }
+    </style>
+  </head>
+  <body>
+    <div>
+      <input type="text" id="nickname" placeholder="暱稱" />
+      <button id="nickBtn" onclick="doLink()">登入</button>
+    </div>
+    <textarea id="taInfo" cols="20" rows="30"></textarea>
+    <div id="msgArea">
+      <input type="text" id="msg" placeholder="請輸入訊息" />
+      <button id="sendBtn" onclick="sendMsg()">送出</button>
+    </div>
+
+    <script>
+      let socket;
+
+      const whenConnected = event=>{
+        if(socket && socket.readyState ===WebSocket.OPEN){
+            socket.send(nickname.value);
+            nickBtn.style.display = 'none';
+            msgArea.style.display = 'block';
+            nickname.setAttribute('readyonly','readyonly');
+        }
+      }
+
+      const whenMsg = event=>{
+        taInfo.value += `${event.data}\n`;
+      }
+
+      function doLink(){
+        if(! socket){
+            socket = new WebSocket('ws://localhost:3005');
+            socket.addEventListener('open', whenConnected);
+            socket.addEventListener('message', whenMsg);
+        }
+      }
+
+      function sendMsg(){
+        if(msg.value.trim()){
+            if(socket && socket.readyState === WebSocket.OPEN){
+                socket.send(msg.value.trim());
+            }
+        }
+      }
+    </script>
+  </body>
+</html>
